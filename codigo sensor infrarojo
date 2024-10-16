@@ -1,0 +1,30 @@
+#include <IRremote.h>   //libreria del receptor infrarojo
+int IRpin = 9;
+int LedPin = 8;
+int state = 0;
+
+void setup() {
+  // inicializar entradas y el ir
+  Serial.begin(9600);
+  IrReceiver.begin(IRpin);
+  pinMode(8, OUTPUT);
+  }
+
+void loop() {
+  while (IrReceiver.decode() == 0) { //mientras no hay datos en ir no hacer nada
+   }
+  int comand = IrReceiver.decodedIRData.command;//decodifica la señal
+  delay(500);
+  IrReceiver.resume();//estabiliza el ir
+
+  if (comand == 12) {//señal 12 arbitrario se puede tomar cualquier boton
+    if (state == 0) {// estado inicial del led apagado
+      state = 1;
+    }
+    else {// en caso este prendido
+      state = 0;
+    }
+  }
+  digitalWrite(LedPin, state);//salida del led prendido o apagado
+  
+}
